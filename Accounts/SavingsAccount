@@ -1,0 +1,29 @@
+package com.aurionpro.bankapp;
+
+import com.aurionpro.exception.MinBalanceViolationException;
+
+public class SavingsAccount extends Account {
+	final double MIN_BALANCE = 500;
+
+	public SavingsAccount(int accno, String name, double balance) {
+		super(accno, name, balance);
+	}
+
+	@Override
+	public void debit(double amount) {
+		validateAmount(amount);
+		if (balance - amount >= MIN_BALANCE) {
+			balance -= amount;
+			System.out.println("Debited: ₹" + amount);
+		} else {
+			throw new MinBalanceViolationException(balance - amount);
+		}
+	}
+
+	@Override
+	public void credit(double amount) {
+		validateAmount(amount);
+		balance += amount;
+		System.out.println("Credited: ₹" + amount);
+	}
+}
