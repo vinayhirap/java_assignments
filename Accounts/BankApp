@@ -1,0 +1,95 @@
+package com.aurionpro.bankapp;
+
+import java.util.*;
+import com.aurionpro.exception.*;
+
+public class BankApp {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		List<Account> accounts = new ArrayList<>();
+
+		accounts.add(new CurrentAccount(101, "Vinay", 10000));
+		accounts.add(new SavingsAccount(102, "Akshada", 10000));
+		accounts.add(new CurrentAccount(103, "Jarjish", 7000));
+		accounts.add(new SavingsAccount(104, "Mustafa", 2500));
+		accounts.add(new CurrentAccount(105, "Anurag", 10000));
+		accounts.add(new SavingsAccount(106, "Jayesh", 1500));
+		accounts.add(new CurrentAccount(107, "Shubham", 8000));
+		accounts.add(new SavingsAccount(108, "Om", 2000));
+		accounts.add(new CurrentAccount(109, "Amogh", 9500));
+		accounts.add(new SavingsAccount(110, "Virag", 5000));
+		accounts.add(new CurrentAccount(111, "Abhishek", 5000));
+		accounts.add(new SavingsAccount(112, "Rupesh", 2000));
+		accounts.add(new CurrentAccount(113, "Swapnil", 7000));
+		accounts.add(new SavingsAccount(114, "Chetan", 6000));
+		accounts.add(new CurrentAccount(115, "Vijay", 9000));
+		accounts.add(new SavingsAccount(116, "Sanyukta", 11000));
+
+		while (true) {
+			System.out.println("\n---- MENU ----");
+			System.out.println("1. Display All Accounts");
+			System.out.println("2. Credit Account");
+			System.out.println("3. Debit Account");
+			System.out.println("4. Sort and Display Accounts by Balance");
+			System.out.println("0. Exit");
+			System.out.print("Enter choice: ");
+			int choice = sc.nextInt();
+
+			try {
+				switch (choice) {
+				case 1 -> {
+					for (Account acc : accounts) {
+						acc.display();
+					}
+				}
+				case 2 -> {
+					System.out.print("Enter Account No to credit: ");
+					int accNo = sc.nextInt();
+					Account acc = findAccountByNo(accounts, accNo);
+					if (acc != null) {
+						System.out.print("Enter amount to credit: ");
+						acc.credit(sc.nextDouble());
+					} else {
+						System.out.println("Account not found.");
+					}
+				}
+				case 3 -> {
+					System.out.print("Enter Account No to debit: ");
+					int accNo = sc.nextInt();
+					Account acc = findAccountByNo(accounts, accNo);
+					if (acc != null) {
+						System.out.print("Enter amount to debit: ");
+						acc.debit(sc.nextDouble());
+					} else {
+						System.out.println("Account not found.");
+					}
+				}
+				case 4 -> {
+					accounts.sort(new AccountBalanceComparator());
+					System.out.println("\nAccounts sorted by balance (High to Low):");
+					for (Account a : accounts) {
+						a.display();
+					}
+				}
+				case 0 -> {
+					System.out.println("Thank you for using the Bank App!");
+					sc.close();
+					System.exit(0);
+				}
+				default -> System.out.println("Invalid choice.");
+				}
+			} catch (MinBalanceViolationException | OverdraftLimitReachedException | NegativeAmountException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+	}
+
+	public static Account findAccountByNo(List<Account> accounts, int accNo) {
+		for (Account acc : accounts) {
+			if (acc.accno == accNo) {
+				return acc;
+			}
+		}
+		return null;
+	}
+}
