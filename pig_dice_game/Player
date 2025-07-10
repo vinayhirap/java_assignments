@@ -1,0 +1,25 @@
+package com.aurionpro.pig;
+
+public class Player {
+    private int score;
+
+    public Player() {
+        this.score = 0;
+    }
+
+    public void resetScore() {
+        this.score = 0;
+    }
+
+    public void addToScore(int points) {
+        this.score += points;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public boolean hasWon() {
+        return score >= 20;
+    }
+}
