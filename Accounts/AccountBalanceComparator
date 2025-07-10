@@ -1,0 +1,10 @@
+package com.aurionpro.bankapp;
+
+import java.util.Comparator;
+
+public class AccountBalanceComparator implements Comparator<Account> {
+	@Override
+	public int compare(Account a1, Account a2) {
+		return Double.compare(a2.balance, a1.balance);
+	}
+}
