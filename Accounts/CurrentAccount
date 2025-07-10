@@ -1,0 +1,29 @@
+package com.aurionpro.bankapp;
+
+import com.aurionpro.exception.OverdraftLimitReachedException;
+
+public class CurrentAccount extends Account {
+	final double OVER_DRAFT_LIMIT = 10000;
+
+	public CurrentAccount(int accno, String name, double balance) {
+		super(accno, name, balance);
+	}
+
+	@Override
+	public void debit(double amount) {
+		validateAmount(amount);
+		if (balance - amount >= -OVER_DRAFT_LIMIT) {
+			balance -= amount;
+			System.out.println("Debited: ₹" + amount);
+		} else {
+			throw new OverdraftLimitReachedException(OVER_DRAFT_LIMIT);
+		}
+	}
+
+	@Override
+	public void credit(double amount) {
+		validateAmount(amount);
+		balance += amount;
+		System.out.println("Credited: ₹" + amount);
+	}
+}
